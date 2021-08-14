@@ -17,7 +17,7 @@ const Login = () => {
         color="blue"
         buttonType="filled"
         ripple="light"
-        onClick={() => console.log("sign in")}
+        onClick={signIn}
       >
         Login
       </Button>
