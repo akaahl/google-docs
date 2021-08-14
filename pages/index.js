@@ -6,11 +6,51 @@ import Icon from "@material-tailwind/react/Icon";
 import Image from "next/image";
 import Login from "../components/Login";
 import { getSession, useSession } from "next-auth/client";
+import { useState } from "react";
+import Modal from "@material-tailwind/react/Modal";
+import ModalBody from "@material-tailwind/react/ModalBody";
+import ModalFooter from "@material-tailwind/react/ModalFooter";
 
 export default function Home() {
   const [session] = useSession();
+  const [showModal, setShowModal] = useState(false);
+  const [input, setInput] = useState("");
+
+  const createDocument = () => {
+    console.log("create document");
+  };
 
   if (!session) return <Login />;
+
+  const modal = (
+    <Modal size="sm" active={showModal} toggler={() => setShowModal(false)}>
+      <ModalBody>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="outline-none w-full"
+          placeholder="Enter name of document..."
+          onKeyDown={(e) => e.key === "Enter" && createDocument()}
+        />
+      </ModalBody>
+
+      <ModalFooter>
+        <Button
+          color="blue"
+          buttonType="link"
+          onClick={() => setShowModal(false)}
+          ripple="dark"
+        >
+          Cancel
+        </Button>
+
+        <Button color="blue" onClick={createDocument} ripple="light">
+          Create
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
 
   return (
     <div>
@@ -21,6 +61,7 @@ export default function Home() {
       </Head>
 
       <Header />
+      {modal}
 
       <section className="bg-[#f8f9fa] pb-10 px-10">
         <div className="max-w-3xl mx-auto">
@@ -42,6 +83,7 @@ export default function Home() {
             <div
               className="relative h-52 w-40 border-2 
               cursor-pointer hover:border-blue-700"
+              onClick={() => setShowModal(true)}
             >
               <Image src="https://links.papareact.com/pju" layout="fill" />
             </div>
