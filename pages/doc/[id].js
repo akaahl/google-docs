@@ -1,4 +1,4 @@
-// import TextEditor from "../../components/TextEditor";
+import TextEditor from "../../components/TextEditor";
 import Button from "@material-tailwind/react/Button";
 import Icon from "@material-tailwind/react/Icon";
 import { useRouter } from "next/dist/client/router";
@@ -54,9 +54,27 @@ const Doc = () => {
         >
           <Icon name="people" size="md" /> SHARE
         </Button>
+
+        <img
+          src={session.user.image}
+          alt="user"
+          className="rounded-full cursor-pointer h-10 w-10 ml-2"
+        />
       </header>
+
+      <TextEditor />
     </div>
   );
 };
 
 export default Doc;
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  return {
+    props: {
+      session,
+    },
+  };
+}
